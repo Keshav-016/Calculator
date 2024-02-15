@@ -8,7 +8,7 @@ function evaluate() {
     let operator = "+";
     let input1 = "";
     while (i < input.length) {
-        if (input[i] === "+" || input[i] === "-" || input[i] === "/" || input[i] === "*") {
+        if (input[i] === "+" || input[i] === "-" || input[i] === "/" || input[i] === "*" || input[i] === "%") {
             switch (operator) {
                 case "+":
                     val += Number(input1);
@@ -21,6 +21,9 @@ function evaluate() {
                     break;
                 case "/":
                     val /= Number(input1);
+                    break;
+                case "%":
+                    val = val % Number(input1);
                     break;
                 default:
                     console.log("wrong operation");
@@ -63,7 +66,7 @@ buttonContainer.addEventListener('click', (e) => {
         display.setAttribute("placeholder", "0");
     }
     else if (e.target.id === "clear") {
-        if (display.value === "Infinity" || display.value==="NaN") {
+        if (display.value === "Infinity" || display.value === "NaN") {
             display.value = "";
         }
         else {
@@ -87,6 +90,10 @@ buttonContainer.addEventListener('click', (e) => {
         display.value += e.target.innerText;
     }
     else if (e.target.id === "divide") {
+        evaluate();
+        display.value += e.target.innerText;
+    }
+    else if (e.target.id === "modulos") {
         evaluate();
         display.value += e.target.innerText;
     }
