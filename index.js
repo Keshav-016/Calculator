@@ -1,60 +1,85 @@
 const display = document.getElementById('display');
 const buttonContainer = document.getElementById('buttonContainer');
+let decimal = false;
 
-function evaluate() {
-    let input = display.value;
-    let i = 0;
-    let val = 0;
-    let operator = "+";
-    let input1 = "";
-    while (i < input.length) {
-        if (input[i] === "+" || input[i] === "-" || input[i] === "/" || input[i] === "*" || input[i] === "%") {
-            switch (operator) {
-                case "+":
-                    val += Number(input1);
-                    break;
-                case "-":
-                    val -= Number(input1);
-                    break;
-                case "*":
-                    val *= Number(input1);
-                    break;
-                case "/":
-                    val /= Number(input1);
-                    break;
-                case "%":
-                    val = val % Number(input1);
-                    break;
-                default:
-                    console.log("wrong operation");
-            }
-            input1 = "";
-            operator = input[i];
-        }
-        else {
-            input1 += input[i];
-        }
-        i++;
-    }
+function isOperator(value) {
+    if (value === "+" || value === "-" || value === "/" || value === "*")
+        return true
+    return false
+}
+function precedence(op) {
+    if (op === "+")
+        return 0;
+    if (op === "-")
+        return 1;
+    if (op === "*")
+        return 2;
+    if (op === "/")
+        return 3;
+}
+function calculate(a, b, operator) {
     switch (operator) {
         case "+":
-            val += Number(input1);
-            break;
+            return a + b;
         case "-":
-            val -= Number(input1);
-            break;
+            return b - a;
         case "*":
-            val *= Number(input1);
-
-            break;
+            return a * b;
         case "/":
-            val /= Number(input1);
-            break;
+            return b / a;
         default:
-            console.log("wrong operation");
+            console.log("error!!!");
     }
-    display.value = val.toString();
+}
 
+function evaluate() {
+    let numbers = [];
+    let operators = [];
+    for (let i = 0; i < display.value.length; i++) {
+        if (!isOperator(display.value[i])) {
+            let num = "";
+            while (i < display.value.length && !isOperator(display.value[i])) {
+                num += display.value[i];
+                i++;
+            }
+            i--;
+            numbers.push(Number(num));
+        }
+        else {
+            if (operators.length === 0)
+                operators.push(display.value[i])
+            else {
+                let prevOperator = operators.pop();
+                let currentOperator = display.value[i];
+                if (precedence(currentOperator) > precedence(prevOperator)) {
+                    operators.push(prevOperator, currentOperator);
+                }
+                else {
+                    while (operators.length > 0 && precedence(currentOperator) < precedence(prevOperator)) {
+                        let a = numbers.pop();
+                        let b = numbers.pop();
+                        numbers.push(calculate(a, b, prevOperator));
+                        prevOperator = operators.pop();
+                    }
+                    if (operators.length === 0 && precedence(currentOperator) < precedence(prevOperator)) {
+                        let a = numbers.pop();
+                        let b = numbers.pop();
+                        numbers.push(calculate(a, b, prevOperator));
+                        operators.push(currentOperator);
+                    }
+                    else
+                        operators.push(prevOperator, currentOperator);
+                }
+            }
+        }
+    }
+    while (operators.length > 0) {
+        let currentOperator = operators.pop();
+        let a = numbers.pop();
+        let b = numbers.pop();
+        numbers.push(calculate(a, b, currentOperator));
+    }
+    display.value = numbers[0];
 }
 
 buttonContainer.addEventListener('click', (e) => {
@@ -64,41 +89,37 @@ buttonContainer.addEventListener('click', (e) => {
     else if (e.target.id === "allClear") {
         display.value = "";
         display.setAttribute("placeholder", "0");
+        decimal = false;
     }
     else if (e.target.id === "clear") {
-        if (display.value === "Infinity" || display.value === "NaN") {
+        if (display.value === "Infinity" || display.value === "NaN" || display.value === "undefined") {
             display.value = "";
         }
         else {
-            display.value = display.value.slice(0, display.value.length - 1);
+            let index = display.value.length - 1;
+            if (display.value[index] === ".")
+                decimal = false;
+            display.value = display.value.slice(0, index);
+
         }
     }
     else if (e.target.id === "equal") {
-        if (display.value !== "")
+        if (display.value !== "" || display.value.length > 1)
             evaluate();
     }
-    else if (e.target.id === "add") {
-        evaluate();
-        display.value += e.target.innerText;
+
+    else if (e.target.id === "decimal") {
+        if (!decimal) {
+            decimal = true;
+            display.value += e.target.innerText;
+        }
     }
-    else if (e.target.id === "subtract") {
-        evaluate();
-        display.value += e.target.innerText;
-    }
-    else if (e.target.id === "multiply") {
-        evaluate();
-        display.value += e.target.innerText;
-    }
-    else if (e.target.id === "divide") {
-        evaluate();
-        display.value += e.target.innerText;
-    }
-    else if (e.target.id === "modulos") {
-        evaluate();
-        display.value += e.target.innerText;
+    else if (e.target.id === "zero") {
+        if (display.value.length > 0) {
+            display.value += e.target.innerText;
+        }
     }
     else {
         display.value += e.target.innerText;
     }
-
 })
