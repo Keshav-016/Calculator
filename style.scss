@@ -1,0 +1,29 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+button {
+  background-color: #48a3f3 !important;
+}
+input {
+  outline: none;
+}
+.section {
+  width: 100vw;
+  height: 100vh;
+}
+.calculatorContainer {
+  background-color: #d0e4f4 !important;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+#equal {
+  background-color: #26cf54 !important;
+}
+#allClear {
+  background-color: #ef666a !important;
+}
+.yellowButton {
+  background-color: #f1a534 !important;
+}
