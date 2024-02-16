@@ -102,7 +102,7 @@ buttonContainer.addEventListener('click', (e) => {
         decimal = false;
     }
     else if (e.target.id === "clear") {
-        if (display.value === "Infinity" || display.value === "NaN" || display.value === "undefined") {
+        if (display.value === "Infinity" || display.value === "NaN" || display.value === "undefined" || display.value === "-Infinity") {
             display.value = "";
         }
         else {
