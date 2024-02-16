@@ -17,6 +17,7 @@ button {
 
 input {
   outline: none;
+  font-size: 40px !important;
 }
 
 .section {

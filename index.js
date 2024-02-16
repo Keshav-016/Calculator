@@ -3,19 +3,21 @@ const buttonContainer = document.getElementById('buttonContainer');
 let decimal = false;
 
 function isOperator(value) {
-    if (value === "+" || value === "-" || value === "/" || value === "*")
+    if (value === "+" || value === "-" || value === "/" || value === "*" || value === "^")
         return true
     return false
 }
 function precedence(op) {
     if (op === "+")
         return 0;
-    if (op === "-")
+    else if (op === "-")
         return 1;
-    if (op === "*")
+    else if (op === "*")
         return 2;
-    if (op === "/")
+    else if (op === "/")
         return 3;
+    else
+        return 4;
 }
 function calculate(a, b, operator) {
     switch (operator) {
@@ -27,17 +29,25 @@ function calculate(a, b, operator) {
             return a * b;
         case "/":
             return b / a;
-        default:
-            console.log("error!!!");
+        case "^":
+            return Math.pow(b, a);;
     }
 }
 
 function evaluate() {
+    let firstNegative = true;
     let numbers = [];
     let operators = [];
     for (let i = 0; i < display.value.length; i++) {
+        let num = "";
+        if (firstNegative) {
+            firstNegative = false;
+            if (display.value[0] === "-") {
+                num += display.value[0];
+                i++;
+            }
+        }
         if (!isOperator(display.value[i])) {
-            let num = "";
             while (i < display.value.length && !isOperator(display.value[i])) {
                 num += display.value[i];
                 i++;
@@ -104,11 +114,13 @@ buttonContainer.addEventListener('click', (e) => {
         }
     }
     else if (e.target.id === "equal") {
-        if (display.value !== "" || display.value.length > 1)
+        let index = display.value.length - 1;
+        if (!isOperator(display.value[index]) && display.value.length > 1)
             evaluate();
     }
 
     else if (e.target.id === "decimal") {
+        let index = display.value.length - 1;
         if (!decimal) {
             decimal = true;
             display.value += e.target.innerText;
@@ -118,6 +130,27 @@ buttonContainer.addEventListener('click', (e) => {
         if (display.value.length > 0) {
             display.value += e.target.innerText;
         }
+    }
+    else if (isOperator(e.target.innerText)) {
+        let index = display.value.length - 1;
+        if (display.value[index] === ".") {
+            return;
+        }
+        if (isOperator(display.value[index])) {
+            display.value = display.value.slice(0, index);
+        }
+        if (display.value.length > 0) {
+            display.value += e.target.innerText;
+            decimal = false;
+        }
+        else if (e.target.innerText === "-" && display.value.length === 0) {
+            display.value += e.target.innerText;
+        }
+    }
+    else if (e.target.id === "squareRoot") {
+        evaluate();
+        let rootNumber = Number(display.value);
+        display.value = Math.sqrt(rootNumber);
     }
     else {
         display.value += e.target.innerText;
