@@ -73,20 +73,14 @@ function evaluate() {
                 }
 
                 else {
-                    while (
-                        operators.length > 0 &&
-                        precedence(currentOperator) < precedence(prevOperator)
-                    ) {
+                    while (operators.length > 0 && precedence(currentOperator) < precedence(prevOperator)) {
                         let a = numbers.pop();
                         let b = numbers.pop();
                         numbers.push(calculate(a, b, prevOperator));
                         prevOperator = operators.pop();
                     }
 
-                    if (
-                        operators.length === 0 &&
-                        precedence(currentOperator) < precedence(prevOperator)
-                    ) {
+                    if (operators.length === 0 && precedence(currentOperator) < precedence(prevOperator)) {
                         let a = numbers.pop();
                         let b = numbers.pop();
                         numbers.push(calculate(a, b, prevOperator));
