@@ -18,6 +18,7 @@ button {
 input {
   outline: none;
   font-size: 40px !important;
+  pointer-events: none;
 }
 
 .section {
@@ -26,7 +27,7 @@ input {
 }
 
 .calculatorContainer {
-  background-color: #D0E3F3 !important;
+  background-color: #d0e3f3 !important;
 }
 
 #equal {

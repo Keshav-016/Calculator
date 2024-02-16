@@ -188,7 +188,7 @@ buttonContainer.addEventListener("click", (e) => {
     }
 });
 
-window.addEventListener('keyup', (e) => {
+window.addEventListener('keydown', (e) => {
     if ((e.key >= 0 && e.key <= 9) || e.key === "+" || e.key === "-" || e.key === "/" || e.key === "*" || e.key === "^") {
         display.value += e.key;
     }

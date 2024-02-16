@@ -1,9 +1,9 @@
 $bgColor: #012a4a;
 $blueButton: #48a3f3;
-$yellowButton : #f1a534;
-$redButton : #ef666a;
-$greenButton : #26cf54;
-$calculatorColor : #D0E3F3;
+$yellowButton: #f1a534;
+$redButton: #ef666a;
+$greenButton: #26cf54;
+$calculatorColor: #d0e3f3;
 
 * {
   margin: 0;
@@ -25,6 +25,7 @@ button {
 input {
   outline: none;
   font-size: 40px !important;
+  pointer-events: none;
 }
 
 .section {
