@@ -2,6 +2,22 @@ const display = document.getElementById("display");
 const buttonContainer = document.getElementById("buttonContainer");
 let decimal = false;
 
+function clear() {
+    if (
+        display.value === "Infinity" ||
+        display.value === "NaN" ||
+        display.value === "undefined" ||
+        display.value === "-Infinity"
+    ) {
+        display.value = "";
+    }
+    else {
+        let index = display.value.length - 1;
+        if (display.value[index] === ".") decimal = false;
+        display.value = display.value.slice(0, index);
+    }
+}
+
 function isOperator(value) {
     if (
         value === "+" ||
@@ -116,20 +132,7 @@ buttonContainer.addEventListener("click", (e) => {
     }
 
     else if (e.target.id === "clear") {
-        if (
-            display.value === "Infinity" ||
-            display.value === "NaN" ||
-            display.value === "undefined" ||
-            display.value === "-Infinity"
-        ) {
-            display.value = "";
-        }
-
-        else {
-            let index = display.value.length - 1;
-            if (display.value[index] === ".") decimal = false;
-            display.value = display.value.slice(0, index);
-        }
+        clear()
     }
 
     else if (e.target.id === "equal") {
@@ -182,3 +185,15 @@ buttonContainer.addEventListener("click", (e) => {
         display.value += e.target.innerText;
     }
 });
+
+window.addEventListener('keyup', (e) => {
+    if ((e.key >= 0 && e.key <= 9) || e.key === "+" || e.key === "-" || e.key === "/" || e.key === "*" || e.key === "^") {
+        display.value += e.key;
+    }
+    else if (e.key === "Enter") {
+        evaluate()
+    }
+    else if (e.key === "Backspace") {
+        clear();
+    }
+})
