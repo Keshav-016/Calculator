@@ -176,9 +176,11 @@ buttonContainer.addEventListener("click", (e) => {
     }
 
     else if (e.target.id === "squareRoot") {
-        evaluate();
-        let rootNumber = Number(display.value);
-        display.value = Math.sqrt(rootNumber);
+        if (display.length > 0) {
+            evaluate();
+            let rootNumber = Number(display.value);
+            display.value = Math.sqrt(rootNumber);
+        }
     }
 
     else {
