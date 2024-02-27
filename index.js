@@ -166,7 +166,7 @@ buttonContainer.addEventListener("click", (e) => {
         }
     }
     else if (e.target.id === "squareRoot") {
-        if (display.value.length > 0) {
+        if (display.value.length > 0 && !isOperator(display.value[display.value.length-1])) {
             evaluate();
             let rootNumber = Number(display.value);
             display.value = Math.sqrt(rootNumber);
