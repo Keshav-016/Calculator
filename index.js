@@ -59,6 +59,7 @@ function evaluate() {
     let operators = [];
     for (let i = 0; i < display.value.length; i++) {
         let num = "";
+
         if (firstNegative) {
             firstNegative = false;
             if (display.value[0] === "-") {
@@ -75,19 +76,17 @@ function evaluate() {
             i--;
             numbers.push(Number(num));
         }
-
         else {
             if (operators.length === 0) {
                 operators.push(display.value[i]);
             }
-
             else {
                 let prevOperator = operators.pop();
                 let currentOperator = display.value[i];
+
                 if (precedence(currentOperator) > precedence(prevOperator)) {
                     operators.push(prevOperator, currentOperator);
                 }
-
                 else {
                     while (operators.length > 0 && precedence(currentOperator) < precedence(prevOperator)) {
                         let a = numbers.pop();
@@ -102,7 +101,6 @@ function evaluate() {
                         numbers.push(calculate(a, b, prevOperator));
                         operators.push(currentOperator);
                     }
-
                     else {
                         operators.push(prevOperator, currentOperator);
                     }
@@ -124,23 +122,19 @@ buttonContainer.addEventListener("click", (e) => {
     if (e.target.tagName !== "BUTTON") {
         return;
     }
-
     else if (e.target.id === "allClear") {
         display.value = "";
         display.setAttribute("placeholder", "0");
         decimal = false;
     }
-
     else if (e.target.id === "clear") {
         clear()
     }
-
     else if (e.target.id === "equal") {
         let index = display.value.length - 1;
         if (!isOperator(display.value[index]) && display.value.length > 1)
             evaluate();
     }
-
     else if (e.target.id === "decimal") {
         let index = display.value.length - 1;
         if (!decimal) {
@@ -148,13 +142,11 @@ buttonContainer.addEventListener("click", (e) => {
             display.value += e.target.innerText;
         }
     }
-
     else if (e.target.id === "zero") {
         if (display.value.length > 0) {
             display.value += e.target.innerText;
         }
     }
-
     else if (isOperator(e.target.innerText)) {
         let index = display.value.length - 1;
         if (display.value[index] === ".") {
@@ -169,12 +161,10 @@ buttonContainer.addEventListener("click", (e) => {
             display.value += e.target.innerText;
             decimal = false;
         }
-
         else if (e.target.innerText === "-" && display.value.length === 0) {
             display.value += e.target.innerText;
         }
     }
-
     else if (e.target.id === "squareRoot") {
         if (display.value.length > 0) {
             evaluate();
@@ -182,7 +172,6 @@ buttonContainer.addEventListener("click", (e) => {
             display.value = Math.sqrt(rootNumber);
         }
     }
-
     else {
         display.value += e.target.innerText;
     }
